@@ -1,3 +1,4 @@
+// import Mongoose
 const mongoose = require('mongoose');
 
 //Structure to create post in DB
