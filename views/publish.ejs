@@ -1,0 +1,19 @@
+<%- include("partials/header") -%> 
+
+<form action="/publish" method="POST">
+	<div>
+		<label for="title">Title</label><br>
+		<input type="text" id="title" name="title" size="48" required>
+	</div>
+	
+	<div>
+		<label for="post">Post</label> <br>
+		<textarea name="description" id="post" cols="50" rows="10" required></textarea>
+	</div>
+
+	<div>
+		<input type="submit" name="" id="submit-btn">
+	</div>
+</form>
+
+<%- include("partials/footer") -%> 
