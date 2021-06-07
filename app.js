@@ -2,6 +2,12 @@ const express =  require('express');
 const path = require('path')
 const ejs = require('ejs')
 
+// require file from config
+const db = require('./config/mongoose')
+// require model from post
+const Post = require('./models/post')
+
+
 const app = express()
 
 app.set('view engine','ejs');
@@ -25,8 +31,12 @@ let posts = [post1,post2]
 
 // Get the home page
 app.get("/",(req,res)=>{
-	res.render('home',{
-		posts:posts
+	Post.find({},(err,posts)=>{
+		if(err){
+			console.log("Error in retrieving the posts");
+			return;
+		}
+		return res.render('home',{posts:posts});		
 	})
 })
 
@@ -38,48 +48,70 @@ app.get("/publish",(req,res)=>{
 
 // Publish the post
 app.post('/publish',(req,res)=>{
-	posts.push(req.body)
-	res.redirect("/")
+	let post = {
+		title: req.body.title,
+		description:req.body.description
+	}
+	
+	Post.create(post,(err,newPost)=>{
+		if(err){
+			console.log("Error in Creating Post");
+			return;
+		}
+		// Post created and saved in DB
+		console.log("~~~~~~ Post saved");
+		return res.redirect('/');
+	})
+	//posts.push(req.body)
 })
 
 
 // Route using Params 
-app.get("/post/:postTitle",(req,res)=>{
-	for(post of posts){
-		if(post.title === req.params.postTitle){
-			res.render("post",{
-				title : post.title,
-				description: post.description
-			})
-			return ;
+app.get("/post/:postId",(req,res)=>{
+	let postId = req.params.postId;
+	Post.findById({_id:postId},(err,post)=>{
+		if(err){
+			console.log("Error in Getting the Post");
+			return;
 		}
-	}
+		res.render("post",{
+			title : post.title,
+			description: post.description
+		})
+		return ;
+	})
 })
 
 
 // Route using query 
 app.get("/post",(req,res)=>{
-	for(post of posts){
-		if(post.title === req.query.title){
-			res.render("post",{
-				title : post.title,
-				description: post.description
-			})
+	let postId = req.query.postId;
+	Post.findById({_id:postId},(err,post)=>{
+		if(err){
+			console.log("Error in Getting the Post");
 			return;
 		}
-	}
+		res.render("post",{
+			title : post.title,
+			description: post.description
+		})
+		return ;
+	})
 })
 
 
 //Delete Post Route
 app.get("/delete-post",(req,res)=>{
-	for(let i=0;i<posts.length;i++){
-		if(posts[i].title === req.query.title){
-			posts.splice(i,1);
-			res.redirect("/");
-			return ;
+	
+	let postId = req.query.postId;
+	Post.deleteOne({_id:postId},(err)=>{
+		if(err){
+			console.log("Error in Deleteing post");
+			return;
 		}
-	}
+		console.log("~~~~~~~Post Deleted");
+		return res.redirect("/")
+	})
 })
 
 // Start The server

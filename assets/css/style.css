@@ -18,8 +18,8 @@ h1{
 }
 #title{
 	color: green;
-	text-transform: uppercase;
-	text-decoration: underline;
+	text-transform: capitalize;
+	text-decoration: none;
 }
 .container{
 	margin:30px 30px;
