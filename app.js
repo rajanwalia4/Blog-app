@@ -71,6 +71,17 @@ app.get("/post",(req,res)=>{
 })
 
 
+//Delete Post Route
+app.get("/delete-post",(req,res)=>{
+	for(let i=0;i<posts.length;i++){
+		if(posts[i].title === req.query.title){
+			posts.splice(i,1);
+			res.redirect("/");
+			return ;
+		}
+	}
+})
+
 // Start The server
 app.listen("3000",(err)=>{
 	console.log("App is running on port 3000");
