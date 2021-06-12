@@ -115,6 +115,6 @@ app.get("/delete-post",(req,res)=>{
 })
 
 // Start The server
-app.listen("3000",(err)=>{
+app.listen(process.env.PORT || 3000,(err)=>{
 	console.log("App is running on port 3000");
 })

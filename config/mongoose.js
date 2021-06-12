@@ -1,6 +1,6 @@
 // getting-started.js
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/blogDB', {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect('mongodb+srv://admin-rajan:baazigar123@cluster0.z7xro.mongodb.net/blogDB', {useNewUrlParser: true, useUnifiedTopology: true});
 
 //acquire the connection(to check if it's successful)
 const db = mongoose.connection;
